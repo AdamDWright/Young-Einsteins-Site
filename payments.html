@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payments | Young Einsteins</title>
+  <meta name="description" content="Payment options for Young Einsteins tutoring, including per lesson, monthly, and term-based arrangements." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <include src="/partials/analytics.html"></include>
+</head>
+<body data-page="payments" class="flex min-h-screen flex-col bg-white text-slate-800">
+  <include src="/partials/header.html"></include>
+
+  <main class="flex-1">
+    <section class="border-b border-slate-200 bg-slate-50 py-14 sm:py-16">
+      <div class="mx-auto max-w-3xl px-4">
+        <p class="eyebrow" data-i18n="payments.eyebrow">Payment Options</p>
+        <h1 class="text-4xl font-extrabold leading-tight sm:text-5xl" data-i18n="payments.title">
+          Flexible payment arrangements for families.
+        </h1>
+        <p class="mt-4 text-lg text-slate-600" data-i18n="payments.lead">
+          Please contact Young Einsteins to confirm current lesson costs and the best payment option for your
+          family.
+        </p>
+      </div>
+    </section>
+
+    <section class="py-16 sm:py-20">
+      <div class="mx-auto grid max-w-6xl gap-5 px-4 sm:grid-cols-3">
+        <article class="card reveal">
+          <h2 class="text-xl font-bold" data-i18n="payments.perlesson.title">Pay Per Lesson</h2>
+          <p class="mt-2 text-slate-600" data-i18n="payments.perlesson.text">Suitable for families who prefer maximum flexibility.</p>
+        </article>
+        <article class="card reveal">
+          <h2 class="text-xl font-bold" data-i18n="payments.monthly.title">Monthly Payments</h2>
+          <p class="mt-2 text-slate-600" data-i18n="payments.monthly.text">A convenient option for ongoing tutoring support.</p>
+        </article>
+        <article class="card reveal">
+          <h2 class="text-xl font-bold" data-i18n="payments.term.title">Term Basis</h2>
+          <p class="mt-2 text-slate-600" data-i18n="payments.term.text">
+            Available for families who prefer to plan ahead across the school term.
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <include src="/partials/footer.html"></include>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

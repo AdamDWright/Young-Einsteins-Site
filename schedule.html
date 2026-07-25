@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schedule | Young Einsteins</title>
+  <meta name="description" content="Current tutoring schedule for Young Einsteins in Dianella, including weekday and weekend lesson times." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <include src="/partials/analytics.html"></include>
+</head>
+<body data-page="schedule" class="flex min-h-screen flex-col bg-white text-slate-800">
+  <include src="/partials/header.html"></include>
+
+  <main class="flex-1">
+    <section class="border-b border-slate-200 bg-slate-50 py-14 sm:py-16">
+      <div class="mx-auto max-w-3xl px-4">
+        <p class="eyebrow" data-i18n="schedule.eyebrow">Schedule</p>
+        <h1 class="text-4xl font-extrabold leading-tight sm:text-5xl" data-i18n="schedule.title">Current tutoring times.</h1>
+        <p class="mt-4 text-lg text-slate-600" data-i18n="schedule.lead">
+          Lesson availability may change, so please contact us to confirm a suitable time.
+        </p>
+      </div>
+    </section>
+
+    <section class="py-16 sm:py-20">
+      <div class="mx-auto grid max-w-6xl gap-5 px-4 sm:grid-cols-3">
+        <article class="card reveal text-center">
+          <h2 class="text-lg font-bold" data-i18n="schedule.tuesfri.title">Tuesday - Friday</h2>
+          <p class="mt-2 text-xl font-extrabold text-brand-blue" data-i18n="schedule.tuesfri.text">4:30 pm - 7:00 pm</p>
+        </article>
+        <article class="card reveal text-center">
+          <h2 class="text-lg font-bold" data-i18n="schedule.sat.title">Saturday</h2>
+          <p class="mt-2 text-xl font-extrabold text-brand-blue" data-i18n="schedule.sat.text">9:00 am - 5:30 pm</p>
+        </article>
+        <article class="card reveal text-center">
+          <h2 class="text-lg font-bold" data-i18n="schedule.sun.title">Sunday</h2>
+          <p class="mt-2 text-xl font-extrabold text-brand-blue" data-i18n="schedule.sun.text">9:00 am - 1:30 pm</p>
+        </article>
+      </div>
+
+      <div class="mx-auto mt-6 max-w-6xl px-4">
+        <div class="reveal rounded-lg border border-brand-blue/20 bg-brand-blue/5 p-6">
+          <h2 class="text-xl font-bold" data-i18n="schedule.length.title">Lesson Length</h2>
+          <p class="mt-2 text-slate-600" data-i18n="schedule.length.text">
+            Each subject can be booked in 1 hour or 1.5 hour tutoring sessions, depending on the student's needs.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <include src="/partials/footer.html"></include>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

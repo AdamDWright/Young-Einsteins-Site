@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --color-brand-blue: #035fb4;
+  --color-brand-blue-dark: #024b8f;
+  --color-brand-yellow: #f3be18;
+  --color-brand-red: #cf2e2e;
+  --color-brand-green: #18794e;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+@layer components {
+  /* Header nav: horizontal row on desktop, slide-down panel on mobile */
+  .site-nav {
+    @apply absolute inset-x-0 top-full z-40 flex -translate-y-2 flex-col gap-1 border-b border-slate-200
+      bg-white px-4 pb-4 pt-2 opacity-0 shadow-lg transition-all duration-300 ease-in-out pointer-events-none
+      md:static md:z-auto md:flex md:translate-y-0 md:flex-row md:items-center md:gap-6 md:border-0 md:bg-transparent
+      md:px-0 md:pb-0 md:pt-0 md:opacity-100 md:shadow-none pointer-events-auto md:pointer-events-auto;
+  }
+
+  .site-nav.is-open {
+    @apply pointer-events-auto translate-y-0 opacity-100;
+  }
+
+  .nav-link {
+    @apply block rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 transition-colors hover:text-brand-blue md:px-0 md:py-0;
+  }
+
+  .nav-link.is-active {
+    @apply text-brand-blue;
+  }
+
+  .lang-toggle {
+    @apply mt-2 inline-flex w-fit items-center rounded-full border border-slate-200 bg-slate-50 p-1 text-xs font-extrabold text-slate-500 md:ml-2 md:mt-0;
+  }
+
+  .lang-option {
+    @apply rounded-full px-2.5 py-1 transition-colors;
+  }
+
+  .lang-option.is-active {
+    @apply bg-brand-blue text-white;
+  }
+
+  .btn {
+    @apply inline-flex min-h-12 items-center justify-center rounded-lg px-5 py-3 text-sm font-bold transition-all duration-200 hover:-translate-y-0.5 disabled:pointer-events-none disabled:opacity-60 disabled:translate-y-0;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand-blue text-white shadow-sm hover:bg-brand-blue-dark hover:shadow-md;
+  }
+
+  .btn-secondary {
+    @apply btn border border-slate-200 bg-white text-slate-900 hover:border-brand-blue hover:text-brand-blue;
+  }
+
+  .card {
+    @apply rounded-xl border border-slate-200 bg-white p-6 shadow-[0_14px_34px_rgba(23,42,66,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_44px_rgba(23,42,66,0.14)];
+  }
+
+  .tag {
+    @apply inline-flex rounded-md px-3 py-1 text-xs font-extrabold uppercase tracking-wide;
+  }
+
+  .tag-blue {
+    @apply bg-brand-blue/10 text-brand-blue;
+  }
+
+  .tag-yellow {
+    @apply bg-brand-yellow/25 text-amber-800;
+  }
+
+  .tag-red {
+    @apply bg-brand-red/10 text-brand-red;
+  }
+
+  .eyebrow {
+    @apply mb-3 text-sm font-extrabold uppercase tracking-wide text-brand-blue;
+  }
+
+  .text-link {
+    @apply mt-3 inline-flex font-extrabold text-brand-blue transition-colors hover:text-brand-blue-dark;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-bold text-slate-800;
+  }
+
+  .field-input {
+    @apply w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-900 outline-none transition focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/15;
+  }
+
+  .field-input.is-error {
+    @apply border-brand-red ring-4 ring-brand-red/15;
+  }
+
+  .field-error {
+    @apply mt-1 min-h-[1.1rem] text-sm text-brand-red;
+  }
+
+  /* Scroll-reveal animation, respects reduced-motion */
+  .reveal {
+    @apply translate-y-4 opacity-0 transition-all duration-700 ease-out;
+  }
+
+  .reveal.is-visible {
+    @apply translate-y-0 opacity-100;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

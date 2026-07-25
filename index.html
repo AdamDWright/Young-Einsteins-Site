@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Young Einsteins Tutoring Services</title>
+  <meta
+    name="description"
+    content="Young Einsteins offers English, Maths, Science, and selected ATAR tutoring in Dianella for students from early years through to Year 12."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <include src="/partials/analytics.html"></include>
+</head>
+<body data-page="home" class="flex min-h-screen flex-col bg-white text-slate-800">
+  <include src="/partials/header.html"></include>
+
+  <main class="flex-1">
+    <section class="bg-gradient-to-b from-white to-slate-50 py-16 sm:py-20 lg:py-24">
+      <div class="mx-auto grid max-w-6xl gap-10 px-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-8">
+        <div class="reveal">
+          <p class="eyebrow" data-i18n="home.eyebrow">English and Maths Tutoring in Dianella</p>
+          <h1 class="max-w-xl text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl" data-i18n="home.hero.title">
+            Structured learning with personalised support.
+          </h1>
+          <p class="mt-5 max-w-lg text-lg text-slate-600" data-i18n="home.hero.text">
+            Young Einsteins supports students from early years through to ATAR with focused tutoring, flexible learning
+            options, and work matched to each student's needs.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="contact.html" class="btn-primary" data-i18n="home.cta.enquire">Make an Enquiry</a>
+            <a href="programs.html" class="btn-secondary" data-i18n="home.cta.programs">View Programs</a>
+          </div>
+        </div>
+
+        <div class="reveal rounded-xl border border-slate-200 bg-white p-6 shadow-[0_14px_34px_rgba(23,42,66,0.1)]">
+          <img src="/assets/logo.png" alt="Young Einsteins logo" class="mx-auto mb-5 w-40 sm:w-56" />
+          <div class="grid gap-3">
+            <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+              <strong class="block font-extrabold" data-i18n="home.stat1.title">Since 2011</strong>
+              <span class="text-sm text-slate-500" data-i18n="home.stat1.text">Helping students build skill and confidence</span>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+              <strong class="block font-extrabold" data-i18n="home.stat2.title">Small groups</strong>
+              <span class="text-sm text-slate-500" data-i18n="home.stat2.text">Usually 5-6 students per table</span>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+              <strong class="block font-extrabold" data-i18n="home.stat3.title">Private lessons</strong>
+              <span class="text-sm text-slate-500" data-i18n="home.stat3.text">Available by request</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 sm:py-20">
+      <div class="reveal mx-auto grid max-w-6xl gap-6 px-4 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div>
+          <p class="eyebrow" data-i18n="home.offer.eyebrow">What We Offer</p>
+          <h2 class="text-3xl font-extrabold sm:text-4xl" data-i18n="home.offer.title">
+            Support across primary, secondary, and selected ATAR subjects.
+          </h2>
+        </div>
+        <p class="max-w-xl text-lg text-slate-600" data-i18n="home.offer.text">
+          Our tutoring is designed to meet students where they are. Younger students can follow structured weekly
+          programs, while older students receive more topic-based support aligned with school work and upcoming
+          assessments.
+        </p>
+      </div>
+    </section>
+
+    <section class="bg-slate-50 py-16 sm:py-20">
+      <div class="mx-auto grid max-w-6xl gap-5 px-4 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="card reveal">
+          <span class="tag tag-blue" data-i18n="home.card.english.tag">English</span>
+          <h3 class="mt-3 text-xl font-bold" data-i18n="home.card.english.title">English Support</h3>
+          <p class="mt-2 text-slate-600" data-i18n="home.card.english.text">
+            Reading, comprehension, writing, and general English support from early years through to senior school.
+          </p>
+          <a href="programs.html#english" class="text-link" data-i18n="home.card.link">Learn more</a>
+        </article>
+
+        <article class="card reveal">
+          <span class="tag tag-yellow" data-i18n="home.card.maths.tag">Mathematics</span>
+          <h3 class="mt-3 text-xl font-bold" data-i18n="home.card.maths.title">Maths Support</h3>
+          <p class="mt-2 text-slate-600" data-i18n="home.card.maths.text">
+            Structured primary maths and personalised secondary maths help based on current school topics.
+          </p>
+          <a href="programs.html#maths" class="text-link" data-i18n="home.card.link">Learn more</a>
+        </article>
+
+        <article class="card reveal">
+          <span class="tag tag-red" data-i18n="home.card.atar.tag">Science and ATAR</span>
+          <h3 class="mt-3 text-xl font-bold" data-i18n="home.card.atar.title">Additional Subjects</h3>
+          <p class="mt-2 text-slate-600" data-i18n="home.card.atar.text">
+            Selected Science and ATAR subjects may be available depending on student needs and tutor availability.
+          </p>
+          <a href="programs.html#atar" class="text-link" data-i18n="home.card.link">Learn more</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="py-16 sm:py-20">
+      <div class="reveal mx-auto grid max-w-6xl items-center gap-6 rounded-xl border border-slate-200 px-4 py-8 shadow-[0_14px_34px_rgba(23,42,66,0.08)] sm:px-8 lg:grid-cols-[1fr_auto_auto]">
+        <div>
+          <p class="eyebrow" data-i18n="home.times.eyebrow">Current Times</p>
+          <h2 class="text-2xl font-extrabold sm:text-3xl" data-i18n="home.times.title">Lessons run after school and on weekends.</h2>
+        </div>
+        <div class="grid gap-1.5 text-slate-700">
+          <p class="font-semibold" data-i18n="home.times.tuesfri">Tuesday - Friday: 4:30 pm - 7:00 pm</p>
+          <p class="font-semibold" data-i18n="home.times.sat">Saturday: 9:00 am - 5:30 pm</p>
+          <p class="font-semibold" data-i18n="home.times.sun">Sunday: 9:00 am - 1:30 pm</p>
+        </div>
+        <a href="schedule.html" class="btn-secondary w-fit" data-i18n="home.times.cta">See Schedule</a>
+      </div>
+    </section>
+
+    <section class="bg-brand-blue py-16 text-white sm:py-20">
+      <div class="reveal mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="eyebrow text-white/80" data-i18n="home.contact.eyebrow">Start Here</p>
+          <h2 class="text-2xl font-extrabold sm:text-3xl" data-i18n="home.contact.title">
+            Ask about availability, subjects, and lesson options.
+          </h2>
+        </div>
+        <a href="contact.html" class="btn-primary bg-white text-brand-blue hover:bg-slate-100 hover:text-brand-blue-dark" data-i18n="home.contact.cta">
+          Contact Young Einsteins
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <include src="/partials/footer.html"></include>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

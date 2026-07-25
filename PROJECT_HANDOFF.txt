@@ -1,0 +1,239 @@
+Young Einsteins Website Project Handoff
+======================================
+
+Purpose
+-------
+This repository contains the Young Einsteins tutoring website. It was
+rebuilt from an earlier plain HTML/CSS/JS static site into a Vite + Tailwind
+build with an EN/VI language toggle and Web3Forms-powered contact form. This
+file summarises the current structure, content, behaviour, and deployment
+plan.
+
+
+Current Stack
+-------------
+- Vite (dev server, build, HTML partials via posthtml-include)
+- Tailwind CSS v4 (all styling)
+- Vanilla JavaScript (nav, scroll-reveal animation, EN/VI toggle, form)
+- Web3Forms (contact form delivery, no backend)
+- Google Analytics 4 (visitor analytics)
+- No Flask, no Python backend, no SQL database, no login system, no admin
+  dashboard, no payment processing
+- Intended hosting: GitHub Pages, built and deployed via GitHub Actions
+
+
+Current File Structure
+----------------------
+Root files:
+- index.html, about.html, programs.html, approach.html, schedule.html,
+  payments.html, contact.html, privacy.html
+- package.json, vite.config.js
+- README.md, PROJECT_HANDOFF.txt
+
+Folders:
+- partials/ (header.html, footer.html, analytics.html - included into every
+  page at build time)
+- src/ (style.css, i18n.js, main.js)
+- public/assets/ (logo.png - served as-is at the site root)
+- .github/workflows/ (deploy.yml - build + GitHub Pages deploy)
+
+
+Current Pages
+-------------
+1. index.html - Homepage. Hero, quick facts, program preview cards, current
+   schedule preview, contact call-to-action.
+2. about.html - Founded 2011, based in Dianella, Perth WA, Pre-Primary to
+   Year 12 / ATAR support.
+3. programs.html - English, Mathematics, Science and ATAR support.
+4. approach.html - Small group learning, private lessons, individualised
+   work, flexible support.
+5. schedule.html - Current tutoring times and lesson length.
+6. payments.html - Pay per lesson, monthly, or term basis (no specific
+   dollar figures are shown anywhere on the site).
+7. contact.html - Contact details and Web3Forms enquiry form.
+8. privacy.html - Privacy Policy (English only - not part of the EN/VI
+   toggle). Linked from the footer, not the main navigation.
+
+
+Contact Details Used
+--------------------
+Mobile:
+- 0418 958 984
+- 0404 865 516
+
+Email:
+- young.einsteins@outlook.com
+
+Location:
+- Dianella, Perth WA (suburb only - no street address is shown anywhere on
+  the site, since the business operates from a private residential address)
+
+Social links:
+- Facebook: https://www.facebook.com/EnglishMathsPhysics/
+- Instagram: https://www.instagram.com/youngeinsteinstutoring/
+
+
+Business Content
+----------------
+Young Einsteins provides tutoring for:
+- English
+- Mathematics
+- Selected Science subjects
+- Selected ATAR subjects
+
+Year levels:
+- Early years / Pre-Primary through to Year 12 / ATAR
+
+English:
+- Structured English worksheets, reading, comprehension, writing, grammar,
+  spelling, and general English skills
+- Support from Pre-Primary through to around Year 11, depending on needs
+
+Mathematics:
+- Pre-Primary to Year 6: structured weekly maths program
+- Year 7 to Year 12: more personalised, topic-based support
+
+Science and ATAR:
+- Available on request, depending on student needs and tutor availability
+- Current ATAR support may include: English, Applications, Methods,
+  Chemistry, Biology, Human Biology
+
+Teaching format:
+- Small-group tutoring is the standard format, usually 5-6 students per
+  table
+- Private lessons are available on request at a higher cost
+- Work is individualised to each student's year level, current school
+  topics, confidence, and learning needs
+
+
+Design Direction
+----------------
+- Tailwind utility classes plus a small set of reusable component classes
+  (.btn-primary, .btn-secondary, .card, .tag, .nav-link) defined in
+  src/style.css
+- Brand colours (blue, yellow, red) carried over from the original site,
+  defined as Tailwind theme colours (brand-blue, brand-yellow, brand-red)
+- Poppins font from Google Fonts
+- Scroll-reveal animation on section/card elements via IntersectionObserver
+  (class "reveal" -> "is-visible"), respecting prefers-reduced-motion
+- Card hover lift/shadow, button hover transitions
+- Mobile header: brand lockup collapses to logo-only below the sm
+  breakpoint; nav becomes a slide-down panel (rather than just a shrunk
+  version of the desktop header) so it doesn't crowd the hamburger and
+  language toggle
+- Footer redesigned as a multi-column layout (brand, quick links, contact,
+  social) on a gradient/dot-pattern background instead of a flat colour bar
+
+
+EN / VI Language Toggle
+------------------------
+- All translatable strings live in src/i18n.js as { key: { en, vi } }
+- HTML elements needing translation carry data-i18n="key" (text content) or
+  data-i18n-attr="attr:key" (for attributes like placeholders)
+- A toggle control ("EN / VI") lives inside the shared nav partial, visible
+  on both desktop and the mobile nav panel
+- Selected language persists in localStorage ("ye-lang") and is re-applied
+  on every page load, since this is a multi-page site, not a single-page app
+- The Vietnamese strings are a best-effort AI translation and should be
+  proofread by a native/fluent speaker before launch
+- privacy.html is deliberately excluded from the toggle and stays English
+  only; only the footer link/button pointing to it is translated
+
+
+Contact Form (Web3Forms)
+-------------------------
+- Fields: parent/guardian name, student year level, mobile number, email,
+  subject needed, lesson type, comments/request
+- A hidden "botcheck" checkbox field is included for Web3Forms' spam
+  filtering
+- On submit: client-side validation runs first (src/main.js), then a POST to
+  https://api.web3forms.com/submit via fetch with the form's access key
+- Status messages ("Sending...", success, fallback error) are language-aware
+  and shown via the same #form-status element the original site used
+- Fallback behaviour is unchanged from the original design: if the access
+  key is missing or the request fails, the fallback message directs people
+  to call 0418 958 984 or email young.einsteins@outlook.com - the form must
+  never fail silently
+- The Web3Forms destination email (the Outlook inbox) is configured on
+  web3forms.com when creating the access key, not in this codebase
+
+
+Deployment Plan
+----------------
+Hosting:
+- GitHub Pages, Source: GitHub Actions (not "Deploy from branch")
+
+Repository ownership:
+1. Adam creates and finishes the site locally.
+2. Adam pushes it to a GitHub repository.
+3. Adam transfers the repository to the Young Einsteins GitHub account.
+4. Young Einsteins becomes the repository owner.
+5. Adam remains a collaborator/contributor.
+
+Build/deploy workflow:
+- .github/workflows/deploy.yml runs on every push to main: npm ci, npm run
+  build, then uploads ./dist via actions/deploy-pages
+- Unlike the previous plain-HTML version, GitHub Pages can no longer serve
+  the repository root directly - it must build first, hence the Actions
+  workflow
+
+Future update workflow:
+1. Edit files locally.
+2. npm run dev to preview.
+3. Commit changes.
+4. Push to GitHub - Actions builds and deploys automatically.
+
+
+Custom Domain Plan
+-------------------
+- The client buys and renews the custom domain separately.
+- GitHub Pages hosting is free.
+- Add custom domain in: Repository -> Settings -> Pages -> Custom domain
+- Configure DNS records at the domain registrar to point to GitHub Pages.
+- Enable HTTPS in GitHub Pages settings once DNS has resolved.
+- If NOT using a custom domain (i.e. served at username.github.io/repo-name
+  instead of the domain root), update `base` in vite.config.js to
+  "/repo-name/" before building.
+
+
+Expected Usage
+--------------
+- Around 50-100 visitors per month
+- Possibly around 20 visitors in one hour
+- Around 15 contact form submissions per month
+- Expected site size around 500 KB to 1 MB
+
+
+Relevant Free Plan Limits
+--------------------------
+GitHub Pages:
+- Free for public repositories on GitHub Free
+- Soft bandwidth limit: 100 GB/month
+- Soft build limit: 10 builds/hour
+- Published site size limit: 1 GB
+
+Web3Forms Free:
+- 250 monthly submissions
+- Expected usage of around 15 submissions/month is safely under the free
+  limit
+
+
+Things Not To Add Unless Requirements Change
+----------------------------------------------
+Do not add paid hosting unless the site later needs:
+- Backend code, database, login/account system, booking system, payments,
+  admin dashboard, or server-side email processing
+
+
+Notes For The Next Agent
+--------------------------
+- This is a Vite build now, not a plain static site - `npm run build` must
+  run before anything is deployed; the repository root is no longer the
+  served output.
+- Keep all navigation as simple page links (no client-side routing/SPA).
+- Keep the contact fallback details visible even if the form exists.
+- Do not add a backend unless explicitly requested.
+- Do not display a street address anywhere on the site - suburb only.
+- Keep privacy.html English-only; do not add data-i18n to its content.
+- See README.md for the pre-launch placeholder checklist (Web3Forms access
+  key, GA4 Measurement ID, Vietnamese translation proofing, Vite base path).
