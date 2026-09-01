@@ -6,20 +6,24 @@ Pages.
 
 ## Stack
 
-- **Vite** - dev server, build, and HTML partials (`posthtml-include`) for the
-  shared header/footer
+- **Vite** - dev server, build, and HTML partials (`posthtml-include`) for
+  the shared nav/footer
 - **Tailwind CSS v4** - all styling, via `@tailwindcss/vite`
-- **Vanilla JS** - mobile nav, scroll-reveal animation, EN/VI language toggle,
-  Web3Forms submission
-- **Web3Forms** - contact form delivery to the business Outlook inbox, no
-  backend required
+- **Vanilla JS** - mobile nav, scroll-reveal animation, EN/VI language
+  toggle, Web3Forms submission with rate limiting, cookie notice banner
+- **Web3Forms** - contact form delivery, no backend required
 - **Google Analytics 4** - visitor analytics
+- **ESLint + Prettier** - linting and formatting
 - Hosting: **GitHub Pages**, built and deployed via GitHub Actions
 
 ## Pages
 
-`index.html`, `about.html`, `programs.html`, `approach.html`, `schedule.html`,
-`payments.html`, `contact.html`, `privacy.html`.
+`index.html`, `about.html`, `subjects.html`, `masterclasses.html`,
+`contact.html`, `privacy.html`, `terms.html`, `404.html`.
+
+`subjects.html` covers both subjects offered and current session times (no
+prices are listed anywhere on the site). `privacy.html` and `terms.html` are
+fully translated and work with the language toggle like every other page.
 
 ## Local development
 
@@ -28,50 +32,92 @@ npm install
 npm run dev       # dev server with hot reload
 npm run build     # production build to ./dist
 npm run preview   # preview the production build locally
+npm run lint      # ESLint
+npm run format    # Prettier, writes formatting fixes
 ```
 
 ## Before launch - fill in these placeholders
 
 1. **Web3Forms access key** - in [contact.html](contact.html), set
-   `data-web3forms-access-key="..."` on the `<form>`. Get a key at
-   [web3forms.com](https://web3forms.com); the destination email address
-   (the Outlook inbox) is configured there, not in code.
+   `data-web3forms-access-key="..."` on the `<form>`. Create the key at
+   [web3forms.com](https://web3forms.com) **using the destination inbox you
+   want enquiries sent to** (e.g. `adamw44j@gmail.com`) - the destination
+   email is tied to the access key on Web3Forms' side, it is not set in this
+   codebase at all.
 2. **Google Analytics Measurement ID** - in
-   [partials/analytics.html](partials/analytics.html), replace both instances
-   of `G-XXXXXXXXXX` with the real GA4 Measurement ID.
-3. **Vietnamese translations** - [src/i18n.js](src/i18n.js) contains a
-   best-effort AI translation for every string. Have a native or fluent
-   Vietnamese speaker proof it before launch.
+   [src/partials/analytics.html](src/partials/analytics.html), replace both
+   instances of `G-XXXXXXXXXX` with the real GA4 Measurement ID.
+3. **Vietnamese translations** - [src/js/translations.js](src/js/translations.js)
+   contains a best-effort AI translation for every string. Have a native or
+   fluent Vietnamese speaker proof it before launch.
 4. **Vite `base` path** - in [vite.config.js](vite.config.js), `base` is set
    to `/`, which assumes the site is served from a domain root (a custom
    domain, or a GitHub `username.github.io` user/org page). If it instead
    deploys to `username.github.io/repo-name`, change `base` to
    `/repo-name/`.
+5. **Photo placeholder** - `about.html` has a marked placeholder box (search
+   for "Photo coming soon") where a real photo of students studying should
+   go once supplied by the business owner.
+6. **Favicon** - currently reuses `public/assets/logo.png` via a `<link
+rel="icon">` tag in [src/partials/head-assets.html](src/partials/head-assets.html)
+   rather than a dedicated `.ico` file.
 
-## How the shared header/footer work
+## Folder structure
 
-`partials/header.html` and `partials/footer.html` are included into every
-page at build time via `<include src="/partials/header.html"></include>`
-(`vite-plugin-posthtml` + `posthtml-include`). Edit the partial once and it
-updates on every page. Each page sets `<body data-page="...">` so
-`src/main.js` can highlight the matching nav link at runtime, since the
-partial itself is identical on every page.
+```
+src/
+  css/main.css        Tailwind entry + custom component/animation styles
+  js/
+    translations.js   EN/VI text dictionary (all copy lives here)
+    i18n.js            translate() / applyLanguage() / language toggle wiring
+    form.js            contact form validation, rate limiting, Web3Forms submit
+    cookie-banner.js   cookie notice banner
+    main.js            entry point - wires up nav, reveal animation, i18n, form, banner
+  partials/
+    nav.html           shared header/nav, included on every page
+    footer.html        shared footer, included on every page
+    head-assets.html   shared favicon/fonts/stylesheet <head> tags
+    analytics.html     GA4 snippet
+public/assets/logo.png  served as-is at /assets/logo.png
+```
+
+Shared partials are included via `<include src="src/partials/...">` tags
+(`posthtml-include`, wired into Vite through a small custom plugin in
+`vite.config.js` - `vite-plugin-posthtml` is unmaintained since 2021 and has
+no version compatible with current Vite, so this project calls `posthtml` +
+`posthtml-include` directly instead). Each page sets `<body data-page="...">`
+so `src/js/main.js` can highlight the matching nav link at runtime, since the
+nav partial itself is identical on every page.
 
 ## Language toggle
 
-`src/i18n.js` holds every translatable string as `{ key: { en, vi } }`.
-Elements needing translation carry `data-i18n="key"`. On load and on toggle,
-`applyLanguage()` walks those elements, swaps text, updates `<html lang>`,
-and persists the choice to `localStorage` so it survives navigating between
-pages. The Privacy Policy page's own content is intentionally left
-untranslated (English only) - only the footer link that points to it is
-translated.
+`src/js/translations.js` holds every translatable string as
+`{ key: { en, vi } }`. Elements needing translation carry `data-i18n="key"`.
+On load and on toggle, `applyLanguage()` (in `src/js/i18n.js`) walks those
+elements, swaps text, updates `<html lang>`, and persists the choice to
+`localStorage` so it survives navigating between pages.
 
 ## Contact form
 
-Submissions post to `https://api.web3forms.com/submit` via `fetch`. If the
-access key is missing or the request fails, the form shows the same fallback
-message asking users to call or email directly - it never fails silently.
+- Fields: student's full name, parent/guardian name, student year level,
+  mobile, email, subject needed, lesson type, comments.
+- A hidden `botcheck` checkbox is included for Web3Forms' spam filtering.
+- Submissions post to `https://api.web3forms.com/submit` via `fetch`.
+- **Rate limiting**: after a successful send, the timestamp is stored in
+  `localStorage`; a resubmission within 15 minutes is blocked with a
+  user-facing message instead of being sent again. The submit button is also
+  disabled immediately on click to prevent double-submits.
+- If the access key is missing or the request fails, the same fallback
+  message directs people to call or email directly - the form never fails
+  silently.
+
+## Cookie notice
+
+A dismissible bottom banner (`src/js/cookie-banner.js`) tells visitors the
+site uses Google Analytics. Dismissal is stored in `localStorage` so it
+doesn't reappear. It's a polite Australian-context notice, not a GDPR
+consent wall, and is translated via the same EN/VI system as the rest of the
+site.
 
 ## GitHub Pages deployment
 

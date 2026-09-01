@@ -3,20 +3,21 @@ Young Einsteins Website Project Handoff
 
 Purpose
 -------
-This repository contains the Young Einsteins tutoring website. It was
-rebuilt from an earlier plain HTML/CSS/JS static site into a Vite + Tailwind
-build with an EN/VI language toggle and Web3Forms-powered contact form. This
-file summarises the current structure, content, behaviour, and deployment
-plan.
+This repository contains the Young Einsteins tutoring website: a Vite +
+Tailwind build with an EN/VI language toggle, Web3Forms contact form, GA4
+analytics, a cookie notice, and a small ESLint/Prettier setup. This file
+summarises the current structure, content, behaviour, and deployment plan.
 
 
 Current Stack
 -------------
 - Vite (dev server, build, HTML partials via posthtml-include)
 - Tailwind CSS v4 (all styling)
-- Vanilla JavaScript (nav, scroll-reveal animation, EN/VI toggle, form)
+- Vanilla JavaScript (nav, scroll-reveal animation, EN/VI toggle, contact
+  form with rate limiting, cookie banner)
 - Web3Forms (contact form delivery, no backend)
 - Google Analytics 4 (visitor analytics)
+- ESLint + Prettier (flat config - see note below)
 - No Flask, no Python backend, no SQL database, no login system, no admin
   dashboard, no payment processing
 - Intended hosting: GitHub Pages, built and deployed via GitHub Actions
@@ -25,44 +26,76 @@ Current Stack
 Current File Structure
 ----------------------
 Root files:
-- index.html, about.html, programs.html, approach.html, schedule.html,
-  payments.html, contact.html, privacy.html
-- package.json, vite.config.js
+- index.html, about.html, subjects.html, masterclasses.html, contact.html,
+  privacy.html, terms.html, 404.html
+- package.json, package-lock.json, vite.config.js, eslint.config.js,
+  .prettierrc, .prettierignore
 - README.md, PROJECT_HANDOFF.txt
 
 Folders:
-- partials/ (header.html, footer.html, analytics.html - included into every
-  page at build time)
-- src/ (style.css, i18n.js, main.js)
-- public/assets/ (logo.png - served as-is at the site root)
-- .github/workflows/ (deploy.yml - build + GitHub Pages deploy)
+- src/css/main.css - Tailwind entry + custom component/animation styles
+- src/js/
+  - translations.js - EN/VI text dictionary (all site copy lives here)
+  - i18n.js - translate() / applyLanguage() / language toggle wiring
+  - form.js - contact form validation, rate limiting, Web3Forms submit
+  - reviews.js - testimonial data + renders the homepage marquee
+  - cookie-banner.js - cookie notice banner
+  - main.js - entry point, wires up nav/reveal/i18n/form/banner/testimonials
+- src/partials/
+  - nav.html - shared header/nav, included on every page
+  - footer.html - shared footer, included on every page
+  - head-assets.html - shared favicon/fonts/stylesheet <head> tags
+  - analytics.html - GA4 snippet
+- public/assets/logo.png - served as-is at /assets/logo.png
+- public/CNAME - custom domain for GitHub Pages (youngeinsteins.com.au)
+- .github/workflows/deploy.yml - build + GitHub Pages deploy
 
 
 Current Pages
 -------------
-1. index.html - Homepage. Hero, quick facts, program preview cards, current
-   schedule preview, contact call-to-action.
+1. index.html - Homepage. Hero, quick facts, subject preview cards, current
+   session-times preview, contact call-to-action.
 2. about.html - Founded 2011, based in Dianella, Perth WA, Pre-Primary to
-   Year 12 / ATAR support.
-3. programs.html - English, Mathematics, Science and ATAR support.
-4. approach.html - Small group learning, private lessons, individualised
-   work, flexible support.
-5. schedule.html - Current tutoring times and lesson length.
-6. payments.html - Pay per lesson, monthly, or term basis (no specific
-   dollar figures are shown anywhere on the site).
-7. contact.html - Contact details and Web3Forms enquiry form.
-8. privacy.html - Privacy Policy (English only - not part of the EN/VI
-   toggle). Linked from the footer, not the main navigation.
+   Year 12 / ATAR support, "Learning In Action" photo placeholder section,
+   and a "Why Families Choose Us" section (folds in what used to be a
+   separate "How We Teach" page: small group learning, private lessons,
+   individualised worksheets, evening/weekend scheduling, wide year range).
+3. subjects.html - English, Mathematics, Science and ATAR support, plus
+   current session times and lesson length (merges what used to be separate
+   Programs and Schedule pages). No prices are shown anywhere on this page
+   or the site.
+4. masterclasses.html - Year 12 Unit 3/4 ATAR exam revision masterclasses:
+   what they are, location, and a contact form for enquiries.
+5. contact.html - Contact details and Web3Forms enquiry form (student's
+   full name, parent/guardian name, year level, phone, email, subject,
+   lesson type, comments). Selecting "ATAR" for subject reveals an extra
+   required "ATAR Subject" field, positioned directly under Subject Needed;
+   it's excluded from validation entirely while hidden so it never blocks a
+   non-ATAR submission.
+6. privacy.html - Privacy Policy. Fully translated (EN/VI), same as every
+   other page. Linked from the footer, not the main navigation.
+7. terms.html - Terms of Use. Fully translated (EN/VI). Site is
+   informational only, no prices listed, content subject to change. Linked
+   from the footer.
+8. 404.html - Custom branded not-found page with a link back to home.
+   GitHub Pages automatically serves this file for unmatched paths as long
+   as it's published at the site root (which the Vite build does).
+
+Note: there is no separate "Payments" or "How We Teach" page anymore - both
+were folded into subjects.html and about.html respectively, per the client
+brief's information architecture (no pricing page, minimal page count).
 
 
 Contact Details Used
 --------------------
 Mobile:
-- 0418 958 984
 - 0404 865 516
 
 Email:
-- young.einsteins@outlook.com
+- young.einsteins@outlook.com (displayed on-site as the fallback contact)
+
+ABN:
+- 54 678 360 088 (shown in the footer)
 
 Location:
 - Dianella, Perth WA (suburb only - no street address is shown anywhere on
@@ -87,7 +120,10 @@ Year levels:
 English:
 - Structured English worksheets, reading, comprehension, writing, grammar,
   spelling, and general English skills
-- Support from Pre-Primary through to around Year 11, depending on needs
+- English copy currently says "Pre-Primary through to Year 11"; the
+  Vietnamese copy was updated during the business owner's translation
+  review to say "Mẫu giáo đến Lớp 12" (Year 12) - these two now disagree
+  and it's an open item to reconcile, not yet resolved as of this handoff.
 
 Mathematics:
 - Pre-Primary to Year 6: structured weekly maths program
@@ -96,12 +132,13 @@ Mathematics:
 Science and ATAR:
 - Available on request, depending on student needs and tutor availability
 - Current ATAR support may include: English, Applications, Methods,
-  Chemistry, Biology, Human Biology
+  Chemistry, Biology, Human Biology, Specialist
 
 Teaching format:
 - Small-group tutoring is the standard format, usually 5-6 students per
   table
-- Private lessons are available on request at a higher cost
+- Private lessons are available on request, depending on availability (no
+  cost/price framing - the site never mentions prices anywhere)
 - Work is individualised to each student's year level, current school
   topics, confidence, and learning needs
 
@@ -110,52 +147,105 @@ Design Direction
 ----------------
 - Tailwind utility classes plus a small set of reusable component classes
   (.btn-primary, .btn-secondary, .card, .tag, .nav-link) defined in
-  src/style.css
+  src/css/main.css
 - Brand colours (blue, yellow, red) carried over from the original site,
   defined as Tailwind theme colours (brand-blue, brand-yellow, brand-red)
 - Poppins font from Google Fonts
-- Scroll-reveal animation on section/card elements via IntersectionObserver
-  (class "reveal" -> "is-visible"), respecting prefers-reduced-motion
-- Card hover lift/shadow, button hover transitions
+- Deliberately soft edges: hard 100%-opacity border lines have been reduced
+  or removed throughout (hero section dividers, card borders, stat-box
+  borders) in favour of shadow-only definition or low-opacity borders -
+  keep this in mind when adding new sections; avoid reaching for a solid
+  `border-slate-200` unless there's a functional reason (e.g. form inputs)
+- Scroll-reveal animation: a fade-up (opacity + slight translateY), see the
+  next section for the safety mechanism, hover lift/shadow on cards and
+  buttons, smooth mobile nav slide-down
 - Mobile header: brand lockup collapses to logo-only below the sm
-  breakpoint; nav becomes a slide-down panel (rather than just a shrunk
-  version of the desktop header) so it doesn't crowd the hamburger and
-  language toggle
-- Footer redesigned as a multi-column layout (brand, quick links, contact,
-  social) on a gradient/dot-pattern background instead of a flat colour bar
+  breakpoint; nav becomes a slide-down panel so it doesn't crowd the
+  hamburger and language toggle
+- Footer redesigned as a multi-column layout (brand+ABN, quick links,
+  contact, social) on a gradient/dot-pattern background instead of a flat
+  colour bar
+- Homepage testimonials: a continuously auto-scrolling marquee
+  (src/js/reviews.js + .marquee/.marquee-track in main.css) built from real
+  anonymised client feedback, duplicated once in the DOM so the CSS
+  translateX loop is seamless. All cards share one height via flexbox
+  stretch, so an unusually long quote makes every card taller - keep quote
+  lengths roughly even when adding new ones.
+- Contact form's Comments/Request field has a 1000-character maxlength and
+  a live "N characters remaining" counter (src/js/form.js), styled light
+  grey under the box and re-rendered on language toggle via a
+  `languagechange` event dispatched from applyLanguage() in i18n.js.
+
+
+Scroll-Reveal Safety Mechanism (read before touching .reveal)
+----------------------------------------------------------------
+Elements with the `.reveal` class are FULLY VISIBLE by default in CSS. Only
+`src/js/main.js` adds the `pre-reveal` class (which is what actually hides
+content, via `opacity: 0` + a slight `translateY`, then fades/slides up
+once `is-visible` is added), and only once it has confirmed
+`IntersectionObserver` is available. This is deliberate: an earlier version
+hid `.reveal` elements by default in CSS and revealed them via JS, and a
+timing/runtime issue left real content (subject cards, About page sections)
+permanently invisible in production - a rebuild without a corresponding CSS
+change would have been indistinguishable from missing content. Do not
+reintroduce a default-hidden state in CSS for any future animation; always
+have JS opt an element INTO a hidden state, never opt it out of one.
 
 
 EN / VI Language Toggle
 ------------------------
-- All translatable strings live in src/i18n.js as { key: { en, vi } }
-- HTML elements needing translation carry data-i18n="key" (text content) or
-  data-i18n-attr="attr:key" (for attributes like placeholders)
-- A toggle control ("EN / VI") lives inside the shared nav partial, visible
-  on both desktop and the mobile nav panel
+- All translatable strings live in src/js/translations.js as
+  { key: { en, vi } }
+- HTML elements needing translation carry data-i18n="key" (text content),
+  data-i18n-html="key" (same, but sets innerHTML - only for keys whose
+  translation intentionally contains simple markup like <strong>, never
+  user input), or data-i18n-attr="attr:key" (for attributes like
+  placeholders)
+- A toggle control ("EN / VI" with a divider) lives inside the shared nav
+  partial, visible on both desktop and the mobile nav panel
 - Selected language persists in localStorage ("ye-lang") and is re-applied
   on every page load, since this is a multi-page site, not a single-page app
 - The Vietnamese strings are a best-effort AI translation and should be
   proofread by a native/fluent speaker before launch
-- privacy.html is deliberately excluded from the toggle and stays English
-  only; only the footer link/button pointing to it is translated
+- privacy.html and terms.html are fully translated and work with the toggle
+  like every other page - the translate() function has no exceptions for
+  them
 
 
 Contact Form (Web3Forms)
 -------------------------
-- Fields: parent/guardian name, student year level, mobile number, email,
-  subject needed, lesson type, comments/request
+- Fields: student's full name, parent/guardian name, student year level,
+  mobile number, email, subject needed, lesson type, comments/request
 - A hidden "botcheck" checkbox field is included for Web3Forms' spam
   filtering
-- On submit: client-side validation runs first (src/main.js), then a POST to
-  https://api.web3forms.com/submit via fetch with the form's access key
-- Status messages ("Sending...", success, fallback error) are language-aware
-  and shown via the same #form-status element the original site used
-- Fallback behaviour is unchanged from the original design: if the access
-  key is missing or the request fails, the fallback message directs people
-  to call 0418 958 984 or email young.einsteins@outlook.com - the form must
-  never fail silently
-- The Web3Forms destination email (the Outlook inbox) is configured on
-  web3forms.com when creating the access key, not in this codebase
+- Rate limiting: on successful submit, the timestamp is written to
+  localStorage; a resubmission within 15 minutes shows a "please wait"
+  message instead of sending again. The submit button is also disabled the
+  instant it's clicked (before validation even runs) to stop double-submits
+- On submit: client-side validation runs first (src/js/form.js), then a
+  POST to https://api.web3forms.com/submit via fetch with the form's access
+  key
+- Status messages ("Sending...", success, fallback error, rate-limited) are
+  language-aware
+- Fallback behaviour: if the access key is missing or the request fails,
+  the fallback message directs people to call 0404 865 516 or email
+  young.einsteins@outlook.com - the form must never fail silently
+- IMPORTANT: the Web3Forms destination inbox (where enquiries actually
+  land) is set when the access key is created on web3forms.com, NOT in this
+  codebase. To have enquiries sent to the real business inbox, create/
+  verify the Web3Forms access key using young.einsteins@outlook.com (the
+  address already shown across the site), then paste the resulting key
+  into contact.html's data-web3forms-access-key attribute.
+
+
+Cookie Notice
+-------------
+- A dismissible bottom banner (src/js/cookie-banner.js) explains that the
+  site uses Google Analytics
+- Dismissal is stored in localStorage ("ye-cookie-consent") so it doesn't
+  reappear
+- Polite Australian-context notice, not a full GDPR consent wall
+- Translated via the same EN/VI system as the rest of the site
 
 
 Deployment Plan
@@ -173,9 +263,8 @@ Repository ownership:
 Build/deploy workflow:
 - .github/workflows/deploy.yml runs on every push to main: npm ci, npm run
   build, then uploads ./dist via actions/deploy-pages
-- Unlike the previous plain-HTML version, GitHub Pages can no longer serve
-  the repository root directly - it must build first, hence the Actions
-  workflow
+- GitHub Pages can no longer serve the repository root directly - it must
+  build first, hence the Actions workflow
 
 Future update workflow:
 1. Edit files locally.
@@ -186,11 +275,26 @@ Future update workflow:
 
 Custom Domain Plan
 -------------------
-- The client buys and renews the custom domain separately.
-- GitHub Pages hosting is free.
+- Domain: youngeinsteins.com.au, bought and renewed by the client through
+  Quantum Core (quantumcore.com.au), an Australian registrar/host. DNS is
+  managed there via Client Area -> Domains -> Manage DNS, unless the
+  domain's nameservers have been pointed elsewhere.
+- GitHub Pages hosting is free. public/CNAME already contains
+  youngeinsteins.com.au, so it's built into every deploy.
 - Add custom domain in: Repository -> Settings -> Pages -> Custom domain
-- Configure DNS records at the domain registrar to point to GitHub Pages.
-- Enable HTTPS in GitHub Pages settings once DNS has resolved.
+- DNS records needed at the registrar:
+  - Apex (youngeinsteins.com.au): four A records to GitHub Pages' shared
+    IPs - 185.199.108.153, 185.199.109.153, 185.199.110.153,
+    185.199.111.153 (verify current values in GitHub's own Pages docs -
+    they're long-stable but GitHub is the source of truth).
+  - www subdomain: one CNAME record to <owning-github-username>.github.io
+    (GitHub then auto-redirects www -> the apex domain set above).
+- Enable "Enforce HTTPS" in GitHub Pages settings once DNS has resolved and
+  GitHub has verified the domain (the checkbox is greyed out until then).
+- If the repository is later transferred to a different GitHub account
+  (see "Repository ownership" below), GitHub Pages does NOT auto-redirect
+  the old owner's *.github.io - the www CNAME record above must be updated
+  to point at the new owning account's *.github.io right after transfer.
 - If NOT using a custom domain (i.e. served at username.github.io/repo-name
   instead of the domain root), update `base` in vite.config.js to
   "/repo-name/" before building.
@@ -199,7 +303,6 @@ Custom Domain Plan
 Expected Usage
 --------------
 - Around 50-100 visitors per month
-- Possibly around 20 visitors in one hour
 - Around 15 contact form submissions per month
 - Expected site size around 500 KB to 1 MB
 
@@ -218,6 +321,27 @@ Web3Forms Free:
   limit
 
 
+Deliberate Deviations From The Original Brief Document
+-----------------------------------------------------
+- tailwind.config.js was NOT added. Tailwind v4 (installed here) uses a
+  CSS-first `@theme` block via the `@tailwindcss/vite` plugin and does not
+  use a JS config file - adding an empty/legacy-style one would be actively
+  misleading.
+- eslint.config.js (flat config) was used instead of .eslintrc.js. The
+  ESLint version that installs today no longer treats .eslintrc.js as its
+  primary config format; flat config is the current equivalent.
+- vite-plugin-posthtml (named in some earlier notes) is unmaintained since
+  2021 with no version compatible with current Vite. vite.config.js instead
+  calls `posthtml` + `posthtml-include` directly via a small custom plugin.
+- public/favicon.ico was not created as a binary file; instead
+  src/partials/head-assets.html references the existing logo.png as the
+  favicon via a standard <link rel="icon" type="image/png"> tag.
+- The logo asset stays in public/assets/ (Vite's static-passthrough
+  convention) rather than src/assets/images/ as originally sketched, to
+  avoid the asset-path resolution issues that come with moving it into the
+  processed src/ tree.
+
+
 Things Not To Add Unless Requirements Change
 ----------------------------------------------
 Do not add paid hosting unless the site later needs:
@@ -234,6 +358,10 @@ Notes For The Next Agent
 - Keep the contact fallback details visible even if the form exists.
 - Do not add a backend unless explicitly requested.
 - Do not display a street address anywhere on the site - suburb only.
-- Keep privacy.html English-only; do not add data-i18n to its content.
+- privacy.html and terms.html ARE translated (data-i18n throughout); keep
+  their translations.js entries in sync if you edit their wording.
+- Never make .reveal hidden by default in CSS - see the "Scroll-Reveal
+  Safety Mechanism" section above.
 - See README.md for the pre-launch placeholder checklist (Web3Forms access
-  key, GA4 Measurement ID, Vietnamese translation proofing, Vite base path).
+  key + destination email, GA4 Measurement ID, Vietnamese translation
+  proofing, Vite base path, real About-page photo).
